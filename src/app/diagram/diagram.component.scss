@@ -1,0 +1,18 @@
+.diagram-container {
+  display: grid;
+  grid-template-columns: 300px minmax(300px, auto);
+  width: 100vw;
+  height: 100vh;
+}
+
+.diagram {
+  background: #FFF;
+  min-height: 100vh;
+  grid-column: 1 / 2;
+}
+
+.palette {
+  background: #F4F4F4;
+  min-height: 100vh;
+  grid-column: 2 / 3;
+}

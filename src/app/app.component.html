@@ -1,17 +1,1 @@
-<div class="diagram-container">
-  <gojs-palette
-    #myPalette
-    [initPalette]="initPalette"
-    divClassName="palette"
-    [nodeDataArray]="paletteNodeData"
-  ></gojs-palette>
-  <gojs-diagram
-    [nodeDataArray]="diagramData?.nodes || []"
-    [linkDataArray]="diagramData?.links || []"
-    [modelData]="diagramData?.model || {}"
-    [initDiagram]="initDiagram"
-    [skipsDiagramUpdate]="skipsDiagramUpdate"
-    (modelChange)="diagramModelChange($event)"
-    divClassName="diagram"
-  ></gojs-diagram>
-</div>
+<app-diagram></app-diagram>
