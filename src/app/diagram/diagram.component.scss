@@ -3,16 +3,41 @@
   grid-template-columns: 300px minmax(300px, auto);
   width: 100vw;
   height: 100vh;
+
+  &__diagram {
+    background: #FFF;
+    min-height: 100vh;
+    grid-column: 1 / 2;
+  }
+
+  &__palette {
+    background: #F4F4F4;
+    min-height: 100vh;
+    grid-column: 2 / 3;
+  }
 }
 
-.diagram {
-  background: #FFF;
-  min-height: 100vh;
-  grid-column: 1 / 2;
-}
+.diagram-toolbar {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  background-color: #fff;
+  display: flex;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 15%);
+  padding: 10px;
+  z-index: 20;
 
-.palette {
-  background: #F4F4F4;
-  min-height: 100vh;
-  grid-column: 2 / 3;
+  &__button {
+    cursor: pointer;
+    background: white;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 4px 10px;
+    transition: all 500ms;
+
+    &:hover {
+      box-shadow: 0 2px 2px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 15%);
+    }
+  }
 }

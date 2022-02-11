@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DataSyncService } from 'gojs-angular';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { DiagramService } from './diagram.service';
 import { createDiagram } from './gojs/create-diagram';
 import { createPalette } from './gojs/create-palette';
 import { LinkData, ModelData, NodeData } from './gojs/models/model.types';
 import { DiagramState } from './models';
 
+@UntilDestroy()
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
@@ -36,10 +38,13 @@ export class DiagramComponent implements OnInit {
   ngOnInit() {
     this.service
       .getDiagramData()
-      .pipe(filter((x) => x != null))
-      .subscribe((x: DiagramState) => {
-        this.skipsDiagramUpdate = true;
-        this.diagramData = x;
+      .pipe(
+        untilDestroyed(this),
+        tap(x => console.log(x)),
+        filter((diagramData) => diagramData != null))
+      .subscribe((diagramData: DiagramState) => {
+        // this.skipsDiagramUpdate = true;
+        this.diagramData = diagramData;
       });
   }
 
@@ -77,4 +82,8 @@ export class DiagramComponent implements OnInit {
 
     return this.palette;
   };
+
+  test() {
+    this.service.addNewNode();
+  }
 }

@@ -1,6 +1,5 @@
 import { measuredPanelName } from './../../../consts';
 import * as go from 'gojs';
-import * as _ from 'lodash/fp';
 import { getFontString, theme } from '../../theme';
 
 

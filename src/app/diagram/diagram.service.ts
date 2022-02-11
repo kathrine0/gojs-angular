@@ -22,6 +22,22 @@ export class DiagramService {
   feedData() {
     this.pushDiagramData({ nodes: mockNodes, links: mockLinks, model: {} });
   }
+
+  addNewNode() {
+    const data = this.diagramData$.getValue();
+
+    const newEl = {
+      key: uuidv4(),
+      text: 'Add node',
+      content: 'Drag to add new node',
+      type: 'info',
+    };
+
+    this.diagramData$.next({
+      ...data,
+      nodes: [...data.nodes, newEl],
+    });
+  }
 }
 
 const mockNodes = [
@@ -31,7 +47,12 @@ const mockNodes = [
     content: 'Something might be broken',
     type: 'warning',
   },
-  { key: uuidv4(), text: 'Node aaa2', content: 'An event happened', type: 'info' },
+  {
+    key: uuidv4(),
+    text: 'Node aaa2',
+    content: 'An event happened',
+    type: 'info',
+  },
   {
     key: uuidv4(),
     text: 'Node aaa3',

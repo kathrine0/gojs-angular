@@ -2,7 +2,7 @@
   <gojs-palette
     #myPalette
     [initPalette]="initPalette"
-    divClassName="palette"
+    divClassName="diagram-container__palette"
     [nodeDataArray]="paletteNodeData"
   ></gojs-palette>
   <gojs-diagram
@@ -12,6 +12,9 @@
     [initDiagram]="initDiagram"
     [skipsDiagramUpdate]="skipsDiagramUpdate"
     (modelChange)="diagramModelChange($event)"
-    divClassName="diagram"
+    divClassName="diagram-container__diagram"
   ></gojs-diagram>
+</div>
+<div class="diagram-toolbar">
+  <button class="diagram-toolbar__button" (click)="test()">Add</button>
 </div>
