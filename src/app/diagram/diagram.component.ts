@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DataSyncService } from 'gojs-angular';
 import { filter, tap } from 'rxjs/operators';
@@ -13,14 +19,15 @@ import { DiagramState } from './models';
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
   styleUrls: ['./diagram.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
 export class DiagramComponent implements OnInit {
   skipsDiagramUpdate = false;
-  private diagram: go.Diagram | undefined;
-  private palette: go.Palette | undefined;
+  private diagram?: go.Diagram;
+  private palette?: go.Palette;
 
-  paletteNodeData = [
+  paletteNodeData: NodeData[] = [
     {
       key: 'PaletteNode1',
       text: 'Add node',
@@ -29,27 +36,33 @@ export class DiagramComponent implements OnInit {
     },
   ];
 
-  diagramData!: DiagramState;
+  diagramData?: DiagramState;
 
-  constructor(private service: DiagramService) {
-    this.service.feedData();
-  }
+  constructor(
+    private readonly service: DiagramService,
+    private readonly cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
+    (window as any)['previewDiagramData'] = this.service.previewDiagramData;
+
+    this.service.feedData();
+
     this.service
       .getDiagramData()
       .pipe(
         untilDestroyed(this),
-        tap(x => console.log(x)),
-        filter((diagramData) => diagramData != null))
+        filter((diagramData) => diagramData != null)
+      )
       .subscribe((diagramData: DiagramState) => {
-        // this.skipsDiagramUpdate = true;
         this.diagramData = diagramData;
+        this.cdRef.markForCheck();
       });
   }
 
   diagramModelChange(changes: go.IncrementalData) {
-    if (this.diagram == null || changes == null) return;
+    if (this.diagram == null || changes == null || this.diagramData == null)
+      return;
 
     const newState = {
       nodes: DataSyncService.syncNodeData(
@@ -68,22 +81,30 @@ export class DiagramComponent implements OnInit {
       ) as ModelData,
     };
 
+    this.skipsDiagramUpdate = true;
     this.service.pushDiagramData(newState);
   }
 
   initDiagram = () => {
     this.diagram = createDiagram();
-    (window as any)['diagram'] = this.diagram;
     return this.diagram;
   };
 
   initPalette = () => {
     this.palette = createPalette();
-
     return this.palette;
   };
 
-  test() {
+  addFromExternal() {
+    this.skipsDiagramUpdate = false;
     this.service.addNewNode();
+  }
+
+  editExitingNodeStatus() {
+    const selection = this.diagram?.selection.map((s) => s.key);
+    if (selection && !!selection.count) {
+      this.skipsDiagramUpdate = false;
+      this.service.switchSelectionStatus(selection);
+    }
   }
 }

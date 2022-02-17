@@ -1,9 +1,8 @@
-import { randomBetween } from './utils/random';
 import * as go from 'gojs';
+import { v4 as uuidv4 } from 'uuid';
 import { link } from './templates/link/link';
 import { node } from './templates/node/node';
-import { v4 as uuidv4 } from 'uuid';
-import { nodeTypes } from './node-types';
+import { getRandomType } from './utils/utils';
 
 const $ = go.GraphObject.make;
 
@@ -20,21 +19,28 @@ export const createDiagram = (): go.Diagram => {
     linkTemplate: link(),
     model: model(),
     scrollMode: go.Diagram.InfiniteScroll,
-    'clickCreatingTool.archetypeNodeData': { text: 'new node' },
+    'undoManager.isEnabled': true,
+    'clickCreatingTool.archetypeNodeData': createNewNode(),
   });
-
-  diagram.undoManager.isEnabled = true;
 
   diagram.addDiagramListener('ExternalObjectsDropped', (e) => {
     e.subject.each((node: go.Node) => {
-      const key = uuidv4();
-      const type = nodeTypes[randomBetween(0, nodeTypes.length - 1)];
-      e.diagram.model.set(node.data, 'key', key);
-      e.diagram.model.set(node.data, 'type', type);
-      e.diagram.model.set(node.data, 'text', `Node ${key.substring(0, 4)}`);
-      e.diagram.model.set(node.data, 'content', `No new status update`);
+      const nodeData = createNewNode();
+      Object.entries(nodeData).forEach(([key, value]) =>
+        e.diagram.model.set(node.data, key, value)
+      );
     });
   });
 
   return diagram;
+};
+
+const createNewNode = () => {
+  const key = uuidv4();
+  return {
+    key,
+    type: getRandomType(),
+    text: `Node ${key.substring(0, 4)}`,
+    content: `No new status update`,
+  };
 };

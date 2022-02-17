@@ -1,6 +1,6 @@
 import * as go from 'gojs';
-import { expandedPanelName, measuredPanelName } from './../../../consts';
-import { theme } from './../../theme';
+import { expandedPanelName, measuredPanelName } from '../../consts';
+import { theme } from '../../theme';
 
 const $ = go.GraphObject.make;
 
@@ -16,14 +16,19 @@ export const itemsColumn = (itemTemplate: go.Panel) =>
     panelWithVerticalMargin(
       { name: measuredPanelName },
       theme.margin.itemsColumnMargin,
-      $(go.Panel, go.Panel.Vertical, itemTemplate)
+      $(
+        go.Panel,
+        go.Panel.Vertical,
+        { margin: new go.Margin(0, 0, theme.margin.itemsColumnMargin, 0) },
+        itemTemplate
+      )
     )
   );
 
 const panelWithVerticalMargin = (
   props = {},
   marginHeight = 0,
-  ...children: go.GraphObject[]
+  child: go.GraphObject
 ) =>
   $(
     go.Panel,
@@ -34,6 +39,5 @@ const panelWithVerticalMargin = (
     $(go.Panel, {
       height: marginHeight + theme.sizes.headerHeight / 2,
     }),
-    children,
-    $(go.Panel, { height: marginHeight })
+    child
   );

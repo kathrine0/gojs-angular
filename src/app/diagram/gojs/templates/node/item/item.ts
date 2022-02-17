@@ -1,7 +1,6 @@
-import { measuredPanelName } from './../../../consts';
+import { measuredPanelName } from '../../consts';
 import * as go from 'gojs';
 import { getFontString, theme } from '../../theme';
-
 
 const $ = go.GraphObject.make;
 

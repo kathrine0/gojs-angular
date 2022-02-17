@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import { NodeData } from './gojs/models/model.types';
+import { getNextType } from './gojs/utils/utils';
 import { DiagramState } from './models';
 
 @Injectable({ providedIn: 'root' })
@@ -26,7 +28,7 @@ export class DiagramService {
   addNewNode() {
     const data = this.diagramData$.getValue();
 
-    const newEl = {
+    const newEl: NodeData = {
       key: uuidv4(),
       text: 'Add node',
       content: 'Drag to add new node',
@@ -38,9 +40,25 @@ export class DiagramService {
       nodes: [...data.nodes, newEl],
     });
   }
+
+  switchSelectionStatus(selection: go.Set<go.Key>) {
+    const data = this.diagramData$.getValue();
+    const newNodes = data.nodes.map((node) => ({
+      ...node,
+      type: selection.contains(node.key) ? getNextType(node.type) : node.type,
+    }));
+    this.diagramData$.next({
+      ...data,
+      nodes: newNodes,
+    });
+  }
+
+  previewDiagramData = () => {
+    console.log(this.diagramData$.getValue());
+  };
 }
 
-const mockNodes = [
+const mockNodes: NodeData[] = [
   {
     key: uuidv4(),
     text: 'Node aaa1',

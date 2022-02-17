@@ -1,6 +1,6 @@
 import * as go from 'gojs';
-import { theme } from '../../theme';
-import { nodeType, nodeTypeStyleMap } from './../../../node-types';
+import { nodeType } from '../../../models/node.types';
+import { nodeTypeStyleMap, theme } from '../../theme';
 
 const $ = go.GraphObject.make;
 
