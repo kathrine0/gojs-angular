@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { NodeData } from './gojs/models/model.types';
+import { NodeData, LinkData } from './gojs/models/model.types';
 import { getNextType } from './gojs/utils/utils';
 import { DiagramState } from './models';
 
@@ -85,7 +85,7 @@ const mockNodes: NodeData[] = [
   },
 ];
 
-const mockLinks = [
+const mockLinks: LinkData[] = [
   { key: -1, from: mockNodes[0].key, to: mockNodes[1].key },
   { key: -2, from: mockNodes[0].key, to: mockNodes[2].key },
 ];
