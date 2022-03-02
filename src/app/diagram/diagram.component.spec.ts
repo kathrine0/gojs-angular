@@ -2,7 +2,7 @@ import { GojsAngularModule } from 'gojs-angular';
 import { DiagramComponent } from './diagram.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe('AppComponent', () => {
+describe('DiagramComponent', () => {
   let fixture: ComponentFixture<DiagramComponent>;
   let component: DiagramComponent;
 
@@ -16,7 +16,7 @@ describe('AppComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create the app', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 });
