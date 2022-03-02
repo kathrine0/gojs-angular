@@ -89,7 +89,8 @@
             "browserTarget": "gojs-angular:build"
           }
         }
-    }
-  },
-  "defaultProject": "gojs-angular"
+      }
+    },
+    "defaultProject": "gojs-angular"
+  }
 }
